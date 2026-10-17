@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Меню, рівні та ефекти</title>
+<style>
+:root{--bg:#f7f6f2;--fg:#1f2227;--muted:#5b616c;--card:#fff;--line:#e2e0d8;--accent:#6b2fa3;--accent2:#3d8b4f;--warn:#a15c00;--code:#efede6}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17191d;--fg:#e9e8e4;--muted:#a3a8b2;--card:#1f2228;--line:#31353d;--accent:#b88ae6;--accent2:#7fd18f;--warn:#ffc266;--code:#262a31}}
+:root[data-theme="dark"]{--bg:#17191d;--fg:#e9e8e4;--muted:#a3a8b2;--card:#1f2228;--line:#31353d;--accent:#b88ae6;--accent2:#7fd18f;--warn:#ffc266;--code:#262a31}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:17px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:980px;margin:0 auto;padding:32px 16px 72px}
+h1{font-size:1.9rem;line-height:1.25;margin:0 0 6px}
+h2{font-size:1.3rem;margin:44px 0 10px;display:flex;gap:10px;align-items:baseline}
+h2 .n{flex:none;display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--accent);color:#fff;font-size:1rem}
+h3{font-size:1.05rem;margin:22px 0 6px}
+p{margin:8px 0}
+.sub{color:var(--muted);margin:0 0 22px}
+.box{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:14px 0}
+.tip{border-left:4px solid var(--accent2)}
+.warn{border-left:4px solid var(--warn)}
+figure{margin:14px 0}
+figure img{width:100%;height:auto;border-radius:8px;border:1px solid var(--line);display:block}
+figcaption{color:var(--muted);font-size:.9rem;margin-top:6px}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:720px){.pair{grid-template-columns:1fr}}
+code,kbd{background:var(--code);padding:1px 6px;border-radius:4px;font-size:.88em;overflow-wrap:anywhere}
+a{overflow-wrap:anywhere}
+kbd{border:1px solid var(--line)}
+table{width:100%;border-collapse:collapse;margin:10px 0;font-size:.95rem}
+th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--muted);font-weight:600}
+.wrap{overflow-x:auto}
+ol li,ul li{margin:4px 0}
+.compass{display:grid;grid-template-columns:repeat(3,44px);grid-template-rows:repeat(3,44px);gap:2px;margin:6px 0;font-weight:700;text-align:center}
+.compass div{display:grid;place-items:center;border-radius:6px}
+.compass .c{background:var(--accent);color:#fff}
+details{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 16px;margin-top:40px}
+summary{cursor:pointer;font-weight:600}
+footer{margin-top:40px;color:var(--muted);font-size:.85rem}
+pre{background:var(--code);border:1px solid var(--line);border-radius:8px;padding:12px 14px;overflow-x:auto;font-size:.86rem;line-height:1.5}
+pre code{background:none;padding:0}
+.new{background:rgba(61,139,79,.18);display:block}
+.icons{display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin:10px 0}
+.icons a{display:grid;justify-items:center;gap:4px;font-size:.85rem;color:var(--muted);text-decoration:none}
+.icons img{width:56px;height:56px;background:#59708f;border-radius:10px;padding:6px}
+.part{margin-top:56px;padding-top:6px;border-top:2px solid var(--line);color:var(--muted);font-size:.9rem;letter-spacing:.06em;text-transform:uppercase}
+figure.narrow img{max-width:460px}
+</style>
+</head>
+<body>
+<main>
+<h1>Меню, рівні та ефекти</h1>
+<p class="sub">Unity PRO · Tower Defense · самостійна робота після уроків 6–8</p>
+
+<div class="pair">
+  <figure><img src="img/01-before.jpg" alt="Гра до: числа без іконок, квадратні кнопки"><figcaption>До: голі числа й квадратні кнопки</figcaption></figure>
+  <figure><img src="img/02-after.jpg" alt="Гра після: панелі з іконками, хвиля, кольорові кнопки"><figcaption>Після: панелі з іконками, номер хвилі, ефекти</figcaption></figure>
+</div>
+
+<div class="box">
+<b>Що ми зробимо.</b> Продовження після уроків 6–8: <b>меню з кількома рівнями</b> і <b>ефекти</b> (сніг, «+50» над ворогом, трясіння камери).
+Інтерфейс (панелі, іконки, картки магазину) — у гайді уроку 5 <a href="../lesson5-makeover/index.html">«Від примітивів до готової гри»</a>.
+</div>
+
+<p class="part">Частина 1 · Меню і рівні</p>
+
+<h2><span class="n">1</span>Зроби другий рівень</h2>
+<ol>
+  <li>У вікні <b>Project</b> виділи сцену гри і натисни <kbd>Ctrl</kbd>+<kbd>D</kbd>. Перейменуй копії: <code>Level1</code> і <code>Level2</code>.</li>
+  <li>Відкрий <code>Level2</code> і зміни її: переклади дорогу інакше, у <b>BuildManager</b> зміни <i>Start Coins</i>, у замку (<b>Castle</b>) — кількість <i>Hp</i>.</li>
+  <li>Дорога змінилась — вороги мають знати новий шлях. Виділи об'єкт з <b>NavMeshSurface</b> і натисни <b>Bake</b>.</li>
+</ol>
+<div class="box warn"><b>Вороги йдуть крізь траву?</b> Ти забув перепекти NavMesh після зміни дороги (крок 3).</div>
+
+<h2><span class="n">2</span>Сцена меню</h2>
+<ol>
+  <li><b>File → New Scene</b>, збережи як <code>Menu</code>.</li>
+  <li><b>GameObject → UI → Canvas</b>. У <b>Canvas Scaler</b>: <i>UI Scale Mode</i> = <b>Scale With Screen Size</b>, <i>Reference Resolution</i> = <b>1920 × 1080</b>.</li>
+  <li>Додай дві кнопки: <b>GameObject → UI → Button - TextMeshPro</b>. Напиши на них «Level 1» і «Level 2».</li>
+  <li>Створи скрипт <code>LevelMenu</code> і додай його на <b>Canvas</b>:</li>
+</ol>
+<pre><code>using UnityEngine;
+using UnityEngine.SceneManagement;
+
+public class LevelMenu : MonoBehaviour
+{
+    // Відкриває сцену за назвою — назву пишемо в кнопці
+    public void Load(string sceneName)
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(sceneName);
+    }
+
+    public void LoadMenu()
+    {
+        Load("Menu");
+    }
+}</code></pre>
+<ol start="5">
+  <li>Виділи кнопку. У <b>On Click ()</b> натисни <b>+</b>, перетягни туди <b>Canvas</b>, вибери <b>LevelMenu → Load</b> і впиши назву сцени, наприклад <code>Level2</code>.</li>
+</ol>
+<figure class="narrow"><img src="img/menu-button.png" alt="Кнопка в Inspector: On Click викликає LevelMenu.Load з назвою сцени"><figcaption>Кнопка викликає <code>LevelMenu.Load</code> і передає назву сцени.</figcaption></figure>
+
+<h2><span class="n">3</span>Додай сцени у збірку і кнопку «Меню»</h2>
+<ol>
+  <li><b>File → Build Profiles → Scene List</b>: перетягни туди <code>Menu</code> (першою!), потім <code>Level1</code>, <code>Level2</code>.</li>
+  <li>У кожному рівні додай на Canvas скрипт <code>LevelMenu</code> і кнопку «Menu», яка викликає <b>LevelMenu → LoadMenu</b>.</li>
+</ol>
+<div class="box warn"><b>Помилка «Scene couldn't be loaded»?</b> Сцени немає в Scene List або назва в кнопці написана з помилкою (великі й малі літери важливі).</div>
+<figure><img src="img/03-menu.jpg" alt="Меню з картками рівнів"><figcaption>Так меню може виглядати, якщо прикрасити кнопки: на кожній — скріншот рівня, назва й зірочки складності.</figcaption></figure>
+
+<p class="part">Частина 2 · Ефекти</p>
+
+<h2><span class="n">4</span>Сніг — без жодного рядка коду</h2>
+<p>Відео з усіма кроками: <a href="../video/snow-slides.mp4">snow-slides.mp4</a> (1 хвилина).</p>
+<ol>
+  <li><b>Hierarchy → ПКМ → Effects → Particle System</b>, назви <code>Snow</code>.</li>
+  <li><b>Transform</b>: Position Y = <b>6</b>, Rotation X = <b>90</b> — частинки летітимуть униз.</li>
+  <li>Головний модуль: <i>Start Lifetime</i> 7, <i>Start Speed</i> 1, <i>Start Size</i> 0.2, <i>Start Color</i> світло-блакитний, <i>Max Particles</i> 600, ✓ <i>Prewarm</i> (сніг уже йде на старті).</li>
+  <li><b>Emission</b>: <i>Rate over Time</i> = 100.</li>
+  <li><b>Shape</b>: <i>Shape</i> = <b>Box</b>, <i>Scale</i> = 14 × 14 × 0.1 — сніг падає з усієї площі поля.</li>
+  <li>Увімкни <b>Noise</b>, <i>Strength</i> = 0.3 — сніжинки гойдаються.</li>
+</ol>
+<div class="pair">
+  <figure><img src="img/08-snow-main.jpg" alt="Головний модуль Particle System"><figcaption>Головний модуль</figcaption></figure>
+  <figure><img src="img/09-snow-shape.jpg" alt="Модуль Shape: Box 14×14×0.1"><figcaption>Shape: Box</figcaption></figure>
+</div>
+<figure><img src="img/10-snow-play.jpg" alt="Гра зі снігом"><figcaption>Натисни Play — іде сніг.</figcaption></figure>
+<div class="box tip"><b>Інша погода з тієї ж системи:</b> пісок — колір жовтуватий, Rotation X = 0 і швидкість убік; світлячки — жовто-зелені, маленькі, Speed 0 і сильний Noise.</div>
+
+<h2><span class="n">5</span>«+50» над переможеним ворогом</h2>
+<ol>
+  <li><b>GameObject → 3D Object → Text - TextMeshPro</b>. Назви <code>RewardText</code>, <i>Font Size</i> 6, вирівнювання по центру, колір жовтий.</li>
+  <li>Додай на нього скрипт <code>FloatUp</code> — текст піднімається і зникає:</li>
+</ol>
+<pre><code>using UnityEngine;
+
+public class FloatUp : MonoBehaviour
+{
+    [SerializeField] private float speed = 1.5f;
+    [SerializeField] private float lifetime = 1f;
+
+    void Start()
+    {
+        Destroy(gameObject, lifetime); // знищиться сам через секунду
+    }
+
+    void Update()
+    {
+        transform.position += Vector3.up * speed * Time.deltaTime;
+        transform.rotation = Camera.main.transform.rotation; // завжди дивиться в камеру
+    }
+}</code></pre>
+<ol start="3">
+  <li>Перетягни <code>RewardText</code> у <code>Assets/Prefabs</code> і видали зі сцени.</li>
+  <li>У <code>EnemyHealth</code> зроби так само, як з <code>boomFX</code> (виділені рядки — нові):</li>
+</ol>
+<pre><code>using TMPro;   <span class="new">// угорі файлу</span>
+...
+[SerializeField] private GameObject boomFX;
+<span class="new">[SerializeField] private GameObject rewardText;</span>
+...
+Instantiate(boomFX, transform.position, Quaternion.identity);
+<span class="new">GameObject text = Instantiate(rewardText, transform.position + Vector3.up, Quaternion.identity);
+text.GetComponent&lt;TMP_Text&gt;().text = "+" + reward;</span>
+Destroy(gameObject);</code></pre>
+<ol start="5">
+  <li>У префабах ворогів перетягни <code>RewardText</code> у нове поле <b>Reward Text</b>.</li>
+</ol>
+<figure><img src="img/11-reward.jpg" alt="Над вибухом ворога напис +50"></figure>
+
+<h2><span class="n">6</span>Трясіння камери, коли ворог дійшов до замку</h2>
+<p>Додай скрипт <code>CameraShake</code> на <b>Main Camera</b>. Він зроблений як singleton — так само, як <code>BuildManager</code> з уроку 3.</p>
+<pre><code>using UnityEngine;
+
+public class CameraShake : MonoBehaviour
+{
+    public static CameraShake Instance;
+
+    [SerializeField] private float duration = 0.3f;
+    [SerializeField] private float strength = 0.2f;
+
+    private Vector3 startPosition;
+    private float timer;
+
+    void Awake()
+    {
+        Instance = this;
+    }
+
+    void Start()
+    {
+        startPosition = transform.position;
+    }
+
+    public void Shake()
+    {
+        timer = duration;
+    }
+
+    void Update()
+    {
+        if (timer &gt; 0)
+        {
+            timer -= Time.deltaTime;
+            transform.position = startPosition + Random.insideUnitSphere * strength;
+        }
+        else
+        {
+            transform.position = startPosition;
+        }
+    }
+}</code></pre>
+<p>У <code>Castle</code> після рядка <code>hp--;</code> додай:</p>
+<pre><code><span class="new">CameraShake.Instance.Shake();</span></code></pre>
+<figure><img src="img/12-castle-hit.jpg" alt="Удар по замку: екран спалахує червоним"><figcaption>У прикладі екран ще й спалахує червоним — це завдання нижче.</figcaption></figure>
+
+<h2><span class="n">★</span>Для тих, хто встиг</h2>
+<ul>
+  <li><b>Червоний спалах:</b> UI Image на весь екран, червоний з прозорістю 0. У <code>CameraShake.Shake()</code> зроби її напівпрозорою, а в <code>Update</code> плавно повертай прозорість до 0.</li>
+  <li><b>Турель «вискакує»:</b> у <code>Start</code> турелі постав <code>transform.localScale = Vector3.zero</code>, а в <code>Update</code> плавно збільшуй до 1.</li>
+  <li><b>Пил при будівництві:</b> Particle System з одним <b>Burst</b> у модулі Emission, створюй його в <code>Node.Build</code> так само, як <code>boomFX</code>.</li>
+</ul>
+
+<details>
+<summary>Для викладача</summary>
+<p>Еталонний проєкт: <code>~/Robocode/Courses/Unity/TowerDefense2026</code>, теги <code>levels</code> → <code>ui</code> → <code>fx</code>. П'ять рівнів, меню з прев'ю і весь інтерфейс та ефекти генеруються меню <b>Robocode → Levels → Generate all levels + menu</b>.</p>
+<p>В еталоні те саме зроблено ширше, ніж у гайді: трасер пострілу з іскрами, червоний спалах ворога, підсвітка вибраної турелі в магазині, банер «WAVE N», лічильник ворогів, погода на кожному рівні, safe area під виріз камери. Ефекти там підключені через <code>SendMessage("OnShot" / "OnDamaged" / "OnKilled")</code>, щоб не змінювати логіку уроків; у гайді для учнів — простіші прямі виклики.</p>
+</details>
+
+<footer>Іконки намальовані кодом для цього курсу — використовуй вільно. Моделі: Kenney (CC0), AurynSky, VSQUAD.</footer>
+</main>
+</body>
+</html>

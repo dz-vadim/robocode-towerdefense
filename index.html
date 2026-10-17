@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tower Defense — гайди</title>
+<style>
+:root{--bg:#f7f6f2;--fg:#1f2227;--muted:#5b616c;--card:#fff;--line:#e2e0d8;--accent:#1f7a4d}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17191d;--fg:#e9e8e4;--muted:#a3a8b2;--card:#1f2228;--line:#31353d;--accent:#5cc98f}}
+:root[data-theme="dark"]{--bg:#17191d;--fg:#e9e8e4;--muted:#a3a8b2;--card:#1f2228;--line:#31353d;--accent:#5cc98f}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:17px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:1040px;margin:0 auto;padding:40px 16px 72px}
+h1{font-size:2rem;line-height:1.2;margin:0 0 6px}
+.sub{color:var(--muted);margin:0 0 28px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+a.card{display:flex;flex-direction:column;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;color:var(--fg);text-decoration:none}
+a.card:hover{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent) inset}
+a.card img{width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:10px;background:var(--line)}
+.num{display:inline-grid;place-items:center;min-width:30px;padding:0 6px;height:30px;border-radius:50%;background:var(--accent);color:#fff;font-weight:700;font-size:.95rem;margin-right:8px}
+.card h2{font-size:1.15rem;margin:0;display:flex;align-items:center}
+.card p{margin:0;color:var(--muted);font-size:.95rem}
+.box{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:28px 0 0}
+kbd{background:var(--line);border-radius:4px;padding:1px 6px;font-weight:600;font-size:.88em}
+footer{margin-top:36px;color:var(--muted);font-size:.85rem}
+</style>
+</head>
+<body>
+<main>
+<h1>Tower Defense у Unity</h1>
+<p class="sub">Гайди курсу Robocode · Unity PRO. Кожен гайд — покрокова інструкція зі скриншотами й кодом, до деяких є коротке відео всіх кроків.</p>
+<div class="grid">
+  <a class="card" href="lesson4-shop/index.html"><img src="lesson4-shop/img/02-after.jpg" alt=""><h2><span class="num">4</span>Магазин, вибух і звук</h2><p>Магазин на три турелі, вибух ворога (Particle System) і звуки пострілів та будівництва.</p></a>
+  <a class="card" href="lesson5-makeover/index.html"><img src="lesson5-makeover/img/01-after.jpg" alt=""><h2><span class="num">5</span>Від примітивів до готової гри</h2><p>Готові 3D-моделі замість кубиків, панель монет і картки магазину.</p></a>
+  <a class="card" href="kenney-art/index.html"><img src="kenney-art/img/11-result.png" alt=""><h2><span class="num">5+</span>Нова графіка Kenney</h2><p>Детально: дорога, ліс, башти й НЛО з набору Kenney (CC0). Додатково — набори з Asset Store.</p></a>
+  <a class="card" href="levels-ui-fx/index.html"><img src="levels-ui-fx/img/02-after.jpg" alt=""><h2><span class="num">6–8</span>Меню, рівні та ефекти</h2><p>Меню з кількома рівнями, сніг, «+50» над ворогом, трясіння камери.</p></a>
+</div>
+<footer>Robocode · курс «Unity PRO». Матеріали для учнів.</footer>
+</main>
+</body>
+</html>

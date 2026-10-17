@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Від примітивів до готової гри</title>
+<style>
+:root{--bg:#f7f6f2;--fg:#1f2227;--muted:#5b616c;--card:#fff;--line:#e2e0d8;--accent:#6b2fa3;--accent2:#3d8b4f;--warn:#a15c00;--code:#efede6}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17191d;--fg:#e9e8e4;--muted:#a3a8b2;--card:#1f2228;--line:#31353d;--accent:#b88ae6;--accent2:#7fd18f;--warn:#ffc266;--code:#262a31}}
+:root[data-theme="dark"]{--bg:#17191d;--fg:#e9e8e4;--muted:#a3a8b2;--card:#1f2228;--line:#31353d;--accent:#b88ae6;--accent2:#7fd18f;--warn:#ffc266;--code:#262a31}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:17px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:980px;margin:0 auto;padding:32px 16px 72px}
+h1{font-size:1.9rem;line-height:1.25;margin:0 0 6px}
+h2{font-size:1.3rem;margin:44px 0 10px;display:flex;gap:10px;align-items:baseline}
+h2 .n{flex:none;display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--accent);color:#fff;font-size:1rem}
+h3{font-size:1.05rem;margin:22px 0 6px}
+p{margin:8px 0}
+.sub{color:var(--muted);margin:0 0 22px}
+.box{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:14px 0}
+.tip{border-left:4px solid var(--accent2)}
+.warn{border-left:4px solid var(--warn)}
+figure{margin:14px 0}
+figure img{width:100%;height:auto;border-radius:8px;border:1px solid var(--line);display:block}
+figcaption{color:var(--muted);font-size:.9rem;margin-top:6px}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:720px){.pair{grid-template-columns:1fr}}
+code,kbd{background:var(--code);padding:1px 6px;border-radius:4px;font-size:.88em;overflow-wrap:anywhere}
+a{overflow-wrap:anywhere}
+kbd{border:1px solid var(--line)}
+table{width:100%;border-collapse:collapse;margin:10px 0;font-size:.95rem}
+th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--muted);font-weight:600}
+.wrap{overflow-x:auto}
+ol li,ul li{margin:4px 0}
+.compass{display:grid;grid-template-columns:repeat(3,44px);grid-template-rows:repeat(3,44px);gap:2px;margin:6px 0;font-weight:700;text-align:center}
+.compass div{display:grid;place-items:center;border-radius:6px}
+.compass .c{background:var(--accent);color:#fff}
+details{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 16px;margin-top:40px}
+summary{cursor:pointer;font-weight:600}
+footer{margin-top:40px;color:var(--muted);font-size:.85rem}
+pre{background:var(--code);border:1px solid var(--line);border-radius:8px;padding:12px 14px;overflow-x:auto;font-size:.86rem;line-height:1.5}
+pre code{background:none;padding:0}
+.new{background:rgba(61,139,79,.18);display:block}
+.icons{display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin:10px 0}
+.icons a{display:grid;justify-items:center;gap:4px;font-size:.85rem;color:var(--muted);text-decoration:none}
+.icons img{width:56px;height:56px;background:#59708f;border-radius:10px;padding:6px}
+.part{margin-top:56px;padding-top:6px;border-top:2px solid var(--line);color:var(--muted);font-size:.9rem;letter-spacing:.06em;text-transform:uppercase}
+figure.narrow img{max-width:460px}
+</style>
+</head>
+<body>
+<main>
+<h1>Від примітивів до готової гри</h1>
+<p class="sub">Unity PRO · урок 5 «Самостійна робота. Покращення гри» · основа — твій проєкт після уроку 4</p>
+
+<div class="pair">
+  <figure><img src="../kenney-art/img/09-before.png" alt="Гра з примітивів: кубики й сфери"><figcaption>Було: кубики, сфери, текст без оформлення</figcaption></figure>
+  <figure><img src="img/01-after.jpg" alt="Гра з моделями Kenney, панеллю монет і картками магазину"><figcaption>Стане: моделі Kenney, панель монет, картки магазину</figcaption></figure>
+</div>
+
+<div class="box tip"><b>Відео всіх кроків</b> (2,5 хв): <a href="../video/lesson5-makeover.mp4">lesson5-makeover.mp4</a> — від сцени з кубиків до готової гри.</div>
+
+<div class="box">
+<b>Що ми зробимо.</b> Логіка гри лишається твоєю — скрипти з уроків 1–4 не змінюються.
+Ми переодягнемо гру: <b>частина 1</b> — готові 3D-моделі замість примітивів, <b>частина 2</b> — інтерфейс, який не соромно показати на телефоні.
+Розрахунок — 2 заняття (по одній частині).
+</div>
+
+<p class="part">Частина 1 · Моделі</p>
+<p>Детальніша версія з поясненнями кожного тайла — у гайді <a href="../kenney-art/index.html">«Нова графіка для Tower Defense»</a>. Тут — короткий шлях.</p>
+
+<h2><span class="n">1</span>Завантаж і імпортуй набір Kenney</h2>
+<ol>
+  <li><a href="https://kenney.nl/assets/tower-defense-kit">kenney.nl/assets/tower-defense-kit</a> → <b>Download</b>, розпакуй.</li>
+  <li>Створи <code>Assets/Kenney/TowerDefenseKit/Models</code> і перетягни туди все з <code>Models/FBX format</code> разом із текою <code>Textures</code>.</li>
+  <li>Створи один матеріал <code>Kenney</code>: Shader <b>Universal Render Pipeline/Lit</b>, у <b>Base Map</b> — <code>colormap.png</code>, Smoothness ≈ 0.15. Усі моделі набору фарбуються ним.</li>
+</ol>
+<div class="pair">
+  <figure><img src="../kenney-art/img/01-project-models.png" alt="Моделі Kenney у Project"></figure>
+  <figure><img src="../kenney-art/img/02-material.png" alt="Матеріал Kenney"></figure>
+</div>
+<div class="box tip"><b>Ліцензія CC0:</b> моделі можна використовувати в будь-якій грі, навіть платній.</div>
+
+<h2><span class="n">2</span>Вузли стають трав'яними тайлами</h2>
+<ol>
+  <li>Відкрий префаб <b>Node</b>: Scale = 1, 1, 1; <b>Mesh</b> = <code>tile</code>; <b>Material</b> = <code>Kenney</code>.</li>
+  <li><b>Box Collider</b>: Center 0, 0.3, 0 · Size 1, 0.6, 1. <b>BuildPoint</b>: Position Y = 0.2.</li>
+  <li>Тайли мають розмір рівно 1×1 — розстав вузли впритул із прив'язкою до сітки з кроком 1, а на місці дороги лиши порожні клітинки.</li>
+</ol>
+<figure><img src="../kenney-art/img/03-node-prefab.png" alt="Префаб Node з тайлом"></figure>
+
+<h2><span class="n">3</span>Дорога з тайлів і NavMesh</h2>
+<ol>
+  <li>Створи порожній <code>Road</code> і склади в ньому дорогу з <code>tile-straight</code>, <code>tile-corner-round</code>, <code>tile-spawn-end-round</code> (старт) і <code>tile-end-round</code> (фініш). Повертай тайли по Y на 90°, щоб з'єднати ділянки.</li>
+  <li><b>Plane</b>: вимкни лише компонент <b>Mesh Renderer</b> (сам Plane не видаляй — по ньому ходять вороги), Position Y = 0.1.</li>
+  <li><b>Plane → NavMesh Surface → Bake</b>. Синя сітка має бути тільки на дорозі.</li>
+</ol>
+<div class="pair">
+  <figure><img src="../kenney-art/img/04-road.png" alt="Дорога з тайлів"></figure>
+  <figure><img src="../kenney-art/img/07-navmesh.png" alt="NavMesh тільки на дорозі"></figure>
+</div>
+
+<h2><span class="n">4</span>Турелі та вороги</h2>
+<ul>
+  <li><b>Турель:</b> у префабі заміни модель основи на <code>tower-round-bottom-a</code> (Scale 0.8, 0.6, 0.8), а гармату всередині <b>Weapon</b> — на <code>weapon-cannon</code> (для інших турелей <code>weapon-turret</code>, <code>weapon-ballista</code>). Weapon підніми на Y ≈ 0.36. Скрипт, Sphere Collider і шар Ignore Raycast не чіпай.</li>
+  <li><b>Ворог:</b> у префабі <b>Enemy</b> видали Mesh Filter і Mesh Renderer, вклади модель <code>enemy-ufo-a</code> (Scale ≈ 0.55). NavMesh Agent: Radius 0.25, Base Offset 0.15.</li>
+</ul>
+<div class="pair">
+  <figure><img src="../kenney-art/img/05-turret-prefab.png" alt="Префаб турелі"></figure>
+  <figure><img src="../kenney-art/img/06-enemy-prefab.png" alt="Префаб ворога"></figure>
+</div>
+
+<h2><span class="n">5</span>Спавн, замок, ліс і камера</h2>
+<ol>
+  <li>На старт дороги — <code>spawn-round</code>. На фініш — замок із частин башти: <code>tower-square-bottom-b</code> → <code>middle-a</code> → <code>top-a</code> → <code>roof-b</code>. Кубу <b>FinishPoint</b> вимкни лише Mesh Renderer.</li>
+  <li>Навколо поля — <code>tile-tree</code>, <code>tile-tree-double</code>, <code>tile-tree-quad</code>, <code>tile-rock</code>, повернуті по-різному.</li>
+  <li><b>Main Camera</b>: Position 0, 8.6, -7.4 · Rotation X 52 · Background — зелений під колір трави.</li>
+  <li>Іконки магазину: з теки <code>Previews</code> архіву імпортуй <code>weapon-cannon.png</code> та інші як <b>Sprite</b> і вкажи їх у полі <b>Icon</b> своїх TurretInfo.</li>
+</ol>
+<figure><img src="../kenney-art/img/10-forest.png" alt="Поле, оточене лісом"></figure>
+<div class="box warn"><b>Моделі білі</b> — у матеріалі немає <code>colormap.png</code>. <b>Рожеві</b> — шейдер не URP. <b>Вороги йдуть по траві</b> — перепечи NavMesh (крок 3).</div>
+
+<p class="part">Частина 2 · Інтерфейс</p>
+
+<h2><span class="n">6</span>Іконки і заокруглена картинка</h2>
+<p>Завантаж (правою кнопкою → «Зберегти як») і перетягни в <code>Assets/Sprites/UI</code>:</p>
+<div class="icons">
+  <a href="icons/coin.png" download><img src="icons/coin.png" alt="">coin</a>
+  <a href="icons/heart.png" download><img src="icons/heart.png" alt="">heart</a>
+  <a href="icons/star.png" download><img src="icons/star.png" alt="">star</a>
+  <a href="icons/play.png" download><img src="icons/play.png" alt="">play</a>
+  <a href="icons/home.png" download><img src="icons/home.png" alt="">home</a>
+  <a href="icons/rounded.png" download><img src="icons/rounded.png" alt="">rounded</a>
+</div>
+<ol>
+  <li>Виділи всі картинки → <b>Texture Type = Sprite (2D and UI)</b> → <b>Apply</b>.</li>
+  <li>Для <code>rounded</code>: <b>Sprite Editor</b> → <b>Border</b> = 52 з усіх боків → <b>Apply</b>. Тепер з неї можна зробити панель будь-якого розміру, а кути не розтягнуться.</li>
+</ol>
+<div class="box tip"><code>heart</code>, <code>play</code> і <code>home</code> знадобляться пізніше — для здоров'я замку, кнопки хвилі та меню на уроках 6–8.</div>
+
+<h2><span class="n">7</span>Canvas під телефон і якорі</h2>
+<ol>
+  <li><b>Canvas → Canvas Scaler</b>: <i>UI Scale Mode</i> = <b>Scale With Screen Size</b>, <i>Reference Resolution</i> = <b>1920 × 1080</b>, <i>Match</i> = 0.5.</li>
+  <li>Кожен елемент прив'яжи до свого краю: <b>Rect Transform → Anchor Presets</b>, затисни <kbd>Alt</kbd> і клікни кут. Монети — лівий верхній, магазин — ліворуч по центру.</li>
+  <li>Перевір: у вікні <b>Game</b> перемкни розмір на <code>2400×1080</code> (як телефон) — нічого не має вилізти за край.</li>
+</ol>
+
+<h2><span class="n">8</span>Панель монет</h2>
+<ol>
+  <li>На Canvas: <b>UI → Image</b>, назви <code>CoinsPanel</code>. <i>Source Image</i> = <code>rounded</code>, <i>Image Type</i> = <b>Sliced</b>, колір — темно-синій напівпрозорий. Розмір 280 × 100, якір — лівий верхній кут, Pos 140, -24.</li>
+  <li>Усередину — ще одна <b>Image</b> з <code>coin</code>, 72 × 72, ліворуч.</li>
+  <li>Перетягни свій текст монет у панель і постав праворуч від іконки: шрифт <b>Bold</b>, розмір 56, вирівнювання ліворуч.</li>
+  <li>У тексті: <b>Material Preset</b> → <code>LiberationSans SDF - Outline</code> — з'явиться обведення, і число читатиметься на будь-якому фоні.</li>
+</ol>
+<div class="pair">
+  <figure><img src="img/coins-pill.png" alt="Панель монет в Inspector: якір зліва вгорі, Image Sliced"><figcaption><i>Pixels Per Unit Multiplier</i> змінює радіус заокруглення: більше число — менші кути.</figcaption></figure>
+  <figure><img src="img/coins-ingame.jpg" alt="Панель монет у грі"><figcaption>Так панель виглядає в грі.</figcaption></figure>
+</div>
+
+<h2><span class="n">9</span>Картки магазину</h2>
+<p>Кнопки магазину створює <code>ShopPanel</code> з префаба — тому змінюємо <b>префаб</b>, і всі кнопки оновляться разом.</p>
+<ol>
+  <li><b>ShopPanel</b>: Image = <code>rounded</code> (Sliced), темний напівпрозорий; у <b>Vertical Layout Group</b> — Padding 16, Spacing 16.</li>
+  <li>Відкрий префаб <b>SelectTurretButton</b>. Його Image: <code>rounded</code>, Sliced, колір <code>#2E3854</code>.</li>
+  <li>У <b>Button</b>: <i>Transition</i> = Color Tint, <i>Pressed Color</i> — сірий. Кнопка темнішатиме при натисканні.</li>
+  <li>Біля ціни додай <b>Image</b> з <code>coin</code> 36 × 36, а <b>CostLabel</b> зсунь праворуч і теж постав йому preset <i>Outline</i>.</li>
+</ol>
+<div class="pair">
+  <figure><img src="img/shop-card.png" alt="Префаб картки: Image rounded Sliced, Button Color Tint"><figcaption>Картка в режимі префаба: фон <code>rounded</code> і Color Tint.</figcaption></figure>
+  <figure class="narrow"><img src="img/shop-ingame.jpg" alt="Магазин з картками в грі"><figcaption>Магазин у грі.</figcaption></figure>
+</div>
+<div class="box warn"><b>Кнопки налізли одна на одну?</b> У Vertical Layout Group вимкни <i>Child Force Expand → Height</i> і задай панелі висоту під кількість карток.</div>
+
+<h2><span class="n">10</span>Перевір і збери</h2>
+<ul>
+  <li>Тисни Play: монети в панелі, картки натискаються, турелі будуються.</li>
+  <li>Клік по картці не має будувати турель під нею — це ми виправляли на уроці 4.</li>
+  <li>Перемкни Game на <code>2400×1080</code> і на <code>1280×720</code> — усе на місці.</li>
+</ul>
+
+<h2><span class="n">★</span>Для тих, хто встиг</h2>
+<ul>
+  <li><b>Підсвітка вибраної турелі:</b> у <code>ShopPanel</code> збережи фони кнопок у <code>List&lt;Image&gt;</code>; у слухачі кліку спочатку всім постав звичайний колір, а натиснутій — золотий.</li>
+  <li><b>Назва турелі на картці:</b> додай у <code>TurretInfo</code> поле <code>title</code> і текст на картці, який заповнює <code>SelectTurretButton.SetTurretInfo</code>.</li>
+  <li><b>Інші світи:</b> набори Forest / Desert / Dungeon з Asset Store — див. додаткове завдання в <a href="../kenney-art/index.html">гайді Kenney</a>.</li>
+</ul>
+
+<details>
+<summary>Для викладача</summary>
+<p>Еталон: <code>~/Robocode/Courses/Unity/TowerDefense2026</code>. Покроковий еталон саме з уроку 4: <code>~/Robocode/Courses/Unity/TD-Lesson5</code>, тег <code>lesson-05-makeover</code> (меню <b>Robocode → Lesson5 → 01…18</b>). Моделі поверх уроку 8 — тег <code>kenney-art</code> (меню <b>Robocode → Tower Defense → Apply Kenney art</b>), інтерфейс у тому ж стилі — тег <code>ui</code> (рівні з <b>Robocode → Levels → Generate all levels + menu</b>; іконки й заокруглений спрайт малюються кодом у <code>Assets/Sprites/UI</code>).</p>
+<p>Продовження після уроків 6–8 (меню рівнів, ефекти): <a href="../levels-ui-fx/index.html">«Меню, рівні та ефекти»</a>.</p>
+</details>
+
+<footer>Моделі: Kenney Tower Defense Kit (CC0). Іконки намальовані для цього курсу — використовуй вільно.</footer>
+</main>
+</body>
+</html>

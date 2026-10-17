@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Нова графіка Tower Defense</title>
+<style>
+:root{--bg:#f7f6f2;--fg:#1f2227;--muted:#5b616c;--card:#fff;--line:#e2e0d8;--accent:#6b2fa3;--accent2:#3d8b4f;--warn:#a15c00;--code:#efede6}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17191d;--fg:#e9e8e4;--muted:#a3a8b2;--card:#1f2228;--line:#31353d;--accent:#b88ae6;--accent2:#7fd18f;--warn:#ffc266;--code:#262a31}}
+:root[data-theme="dark"]{--bg:#17191d;--fg:#e9e8e4;--muted:#a3a8b2;--card:#1f2228;--line:#31353d;--accent:#b88ae6;--accent2:#7fd18f;--warn:#ffc266;--code:#262a31}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:17px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:980px;margin:0 auto;padding:32px 16px 72px}
+h1{font-size:1.9rem;line-height:1.25;margin:0 0 6px}
+h2{font-size:1.3rem;margin:44px 0 10px;display:flex;gap:10px;align-items:baseline}
+h2 .n{flex:none;display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--accent);color:#fff;font-size:1rem}
+h3{font-size:1.05rem;margin:22px 0 6px}
+p{margin:8px 0}
+.sub{color:var(--muted);margin:0 0 22px}
+.box{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:14px 0}
+.tip{border-left:4px solid var(--accent2)}
+.warn{border-left:4px solid var(--warn)}
+figure{margin:14px 0}
+figure img{width:100%;height:auto;border-radius:8px;border:1px solid var(--line);display:block}
+figcaption{color:var(--muted);font-size:.9rem;margin-top:6px}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:720px){.pair{grid-template-columns:1fr}}
+code,kbd{background:var(--code);padding:1px 6px;border-radius:4px;font-size:.88em;overflow-wrap:anywhere}
+a{overflow-wrap:anywhere}
+kbd{border:1px solid var(--line)}
+table{width:100%;border-collapse:collapse;margin:10px 0;font-size:.95rem}
+th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--muted);font-weight:600}
+.wrap{overflow-x:auto}
+ol li,ul li{margin:4px 0}
+.compass{display:grid;grid-template-columns:repeat(3,44px);grid-template-rows:repeat(3,44px);gap:2px;margin:6px 0;font-weight:700;text-align:center}
+.compass div{display:grid;place-items:center;border-radius:6px}
+.compass .c{background:var(--accent);color:#fff}
+details{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 16px;margin-top:40px}
+summary{cursor:pointer;font-weight:600}
+footer{margin-top:40px;color:var(--muted);font-size:.85rem}
+</style>
+</head>
+<body>
+<main>
+<h1>Нова графіка для Tower Defense</h1>
+<p class="sub">Unity PRO · урок 5 «Самостійна робота. Покращення гри» · набір Kenney Tower Defense Kit</p>
+
+<div class="pair">
+  <figure><img src="img/09-before.png" alt="Гра до: сірі кубики та сфери"><figcaption>До: кубики-вузли та сфери-вороги</figcaption></figure>
+  <figure><img src="img/11-result.png" alt="Гра після: дорога, ліс, башти й НЛО"><figcaption>Після: дорога, ліс, башти й НЛО з набору Kenney</figcaption></figure>
+</div>
+
+<div class="box">
+<b>Що ми зробимо.</b> Сама гра лишиться такою, як ти її написав: скрипти не змінюються. Замінимо тільки «одяг»:
+поле, дорогу, вузли, турелі, ворогів, спавн і замок. Знадобиться проєкт після уроку 5 і 1–2 заняття.
+</div>
+
+<h2><span class="n">1</span>Завантаж набір</h2>
+<p>Відкрий <a href="https://kenney.nl/assets/tower-defense-kit">kenney.nl/assets/tower-defense-kit</a> і натисни <b>Download</b>. Розпакуй архів.</p>
+<figure><img src="img/00-kenney-site.png" alt="Сторінка Kenney Tower Defense Kit"></figure>
+<div class="box tip"><b>Ліцензія CC0</b> означає, що моделі можна використовувати в будь-якій грі, навіть платній, і не треба нікого питати. Але подякувати автору у титрах — гарний тон.</div>
+
+<h2><span class="n">2</span>Імпортуй моделі в проєкт</h2>
+<ol>
+  <li>У вікні <b>Project</b> створи теки <code>Assets/Kenney/TowerDefenseKit/Models</code>.</li>
+  <li>З архіву перетягни у <code>Models</code> усі файли з теки <code>Models/FBX format</code> <b>разом із підтекою</b> <code>Textures</code> (у ній лежить <code>colormap.png</code>).</li>
+</ol>
+<figure><img src="img/01-project-models.png" alt="Моделі Kenney у вікні Project"><figcaption>Клікни на будь-яку модель, і праворуч в Inspector буде її прев'ю.</figcaption></figure>
+
+<h2><span class="n">3</span>Створи один матеріал на всі моделі</h2>
+<p>Усі моделі Kenney фарбуються однією картинкою-палітрою. Тому матеріал потрібен лише один.</p>
+<ol>
+  <li>ПКМ у <code>Assets/Kenney/TowerDefenseKit</code> → <b>Create → Material</b>, назви <code>Kenney</code>.</li>
+  <li>Shader: <b>Universal Render Pipeline/Lit</b>.</li>
+  <li>У <b>Base Map</b> перетягни <code>Models/Textures/colormap.png</code>. Smoothness постав близько 0.15, щоб моделі не блищали.</li>
+</ol>
+<figure><img src="img/02-material.png" alt="Матеріал Kenney в Inspector"><figcaption>Кулька внизу Inspector має стати кольоровою.</figcaption></figure>
+<div class="box warn"><b>Моделі білі або помаранчеві?</b> У Base Map стоїть не та картинка. Потрібна саме <code>colormap.png</code> з теки FBX, а не <code>variation-a.png</code>.</div>
+
+<h2><span class="n">4</span>Вузол = трав'яний тайл</h2>
+<p>Тайли Kenney мають розмір рівно 1×1, тож проміжки між вузлами більше не потрібні: поле стане суцільним.</p>
+<ol>
+  <li>Відкрий префаб <b>Node</b> (подвійний клік).</li>
+  <li>Transform → <b>Scale</b> = <code>1, 1, 1</code>.</li>
+  <li>Mesh Filter → <b>Mesh</b> = <code>tile</code>. Mesh Renderer → <b>Material</b> = <code>Kenney</code>.</li>
+  <li>Box Collider: <b>Center</b> = <code>0, 0.3, 0</code>, <b>Size</b> = <code>1, 0.6, 1</code>.</li>
+  <li>Дочірній <b>BuildPoint</b>: Position Y = <code>0.2</code> (верх тайла).</li>
+</ol>
+<figure><img src="img/03-node-prefab.png" alt="Префаб Node з тайлом Kenney"><figcaption>Скрипт Node лишився: підсвітка та будівництво працюють як раніше.</figcaption></figure>
+<div class="box tip"><b>Навіщо колайдер вищий за тайл?</b> Пам'ятаєш Step Height = 0.001 з уроку 1? NavMesh не дасть ворогу «залізти» на високий колайдер, тому вороги ходять тільки дорогою.</div>
+
+<h2><span class="n">5</span>Розстав вузли щільно</h2>
+<p>Увімкни прив'язку до сітки з кроком <b>1</b> (а не 0.5, як на уроці 1) і пересунь вузли так, щоб вони стояли впритул. Там, де раніше була дорога, лиши порожні клітинки.</p>
+
+<h2><span class="n">6</span>Збери дорогу з тайлів</h2>
+<p>Створи порожній об'єкт <b>Road</b> і перетягуй у нього тайли дороги на порожні клітинки. Тобі знадобляться чотири види:</p>
+<div class="wrap"><table>
+<tr><th>Тайл</th><th>Де ставити</th><th>Куди «дивиться» без повороту</th></tr>
+<tr><td><code>tile-straight</code></td><td>пряма ділянка</td><td>північ ↕ південь</td></tr>
+<tr><td><code>tile-corner-round</code></td><td>поворот</td><td>з'єднує північ і захід</td></tr>
+<tr><td><code>tile-end-round</code></td><td>кінець дороги біля замку</td><td>відкритий на північ</td></tr>
+<tr><td><code>tile-spawn-end-round</code></td><td>початок дороги, де з'являються вороги</td><td>відкритий на північ</td></tr>
+</table></div>
+<div class="pair">
+<div class="box">
+<b>Як повернути тайл.</b> «Північ» — це вісь <b>+Z</b> (синя стрілка). Rotation Y:
+<ul>
+<li><code>0</code>: як у таблиці;</li>
+<li><code>90</code>: північ стає сходом;</li>
+<li><code>180</code>: північ стає півднем;</li>
+<li><code>270</code>: північ стає заходом.</li>
+</ul>
+Приклад: поворот, який з'єднує <b>південь і схід</b>, — це <code>tile-corner-round</code> з Y = <code>180</code>.
+</div>
+<div class="box">
+<div class="compass">
+<div></div><div class="c">N</div><div></div>
+<div class="c">W</div><div>+Z ↑</div><div class="c">E</div>
+<div></div><div class="c">S</div><div></div>
+</div>
+<p>Дублюй тайл через <kbd>Ctrl</kbd>+<kbd>D</kbd> і пересувай із прив'язкою до сітки.</p>
+</div>
+</div>
+<figure><img src="img/04-road.png" alt="Тайли дороги в сцені"><figcaption>Виділений тайл: подивись на його Rotation в Inspector.</figcaption></figure>
+
+<h2><span class="n">7</span>Plane стає невидимою підлогою</h2>
+<p>Ворогам потрібна поверхня для NavMesh, але бачити її не обов'язково.</p>
+<ol>
+  <li>Вибери <b>Plane</b> і зніми галочку з компонента <b>Mesh Renderer</b> (сам Plane не видаляй!).</li>
+  <li>Position Y = <code>0.1</code> (висота дороги). Scale підбери рівно під поле.</li>
+</ol>
+
+<h2><span class="n">8</span>Нові турелі</h2>
+<p>Відкрий префаб турелі. Заміни тільки моделі, а все інше не чіпай.</p>
+<ol>
+  <li><b>Base</b> → заміни модель на башту <code>tower-round-bottom-a</code> (Scale <code>0.8, 0.6, 0.8</code>).</li>
+  <li>Усередині <b>Weapon</b> заміни модель гармати на <code>weapon-cannon</code>. Для інших турелей візьми <code>weapon-turret</code> та <code>weapon-ballista</code>.</li>
+  <li>Підніми <b>Weapon</b> на верх башти (Position Y ≈ <code>0.36</code>).</li>
+</ol>
+<figure><img src="img/05-turret-prefab.png" alt="Префаб турелі з гарматою Kenney"><figcaption>На Weapon лишаються: Sphere Collider (зона дії), Audio Source, Turret і шар Ignore Raycast.</figcaption></figure>
+<div class="box warn"><b>Турель не стріляє?</b> Перевір, що Sphere Collider на Weapon досі <b>Is Trigger</b> і Radius не став крихітним після зміни Scale.</div>
+
+<h2><span class="n">9</span>Вороги-НЛО</h2>
+<ol>
+  <li>Відкрий префаб <b>Enemy</b>. Видали в нього компоненти Mesh Filter і Mesh Renderer (сфера зникне).</li>
+  <li>Перетягни всередину модель <code>enemy-ufo-a</code> як дочірню, Scale ≈ <code>0.55</code>.</li>
+  <li>NavMesh Agent: Radius <code>0.25</code>, Base Offset <code>0.15</code> (НЛО трохи висить над дорогою).</li>
+  <li>Для EnemyFast та EnemyTank візьми <code>enemy-ufo-b</code> і <code>enemy-ufo-c</code>.</li>
+</ol>
+<figure><img src="img/06-enemy-prefab.png" alt="Префаб ворога-НЛО"></figure>
+
+<h2><span class="n">10</span>Спавн і замок</h2>
+<p>На клітинку спавну постав <code>spawn-round</code>. Замок збери з частин башти, як із конструктора: <code>tower-square-bottom-b</code> → <code>tower-square-middle-a</code> → <code>tower-square-top-a</code> → <code>tower-square-roof-b</code>, кожну частину поверх попередньої.</p>
+<p>Кубу <b>FinishPoint</b> вимкни Mesh Renderer: його Box Collider (тригер) і скрипт Castle мають лишитися!</p>
+<figure><img src="img/08-castle.png" alt="Замок із частин башти"></figure>
+
+<h2><span class="n">11</span>Ліс навколо поля</h2>
+<p>Обклади поле тайлами <code>tile-tree</code>, <code>tile-tree-double</code>, <code>tile-tree-quad</code> і <code>tile-rock</code>. Повертай їх на 90°, щоб ліс не виглядав однаково. Познач їх <b>Static</b>, як на уроці 8 (Batching Static).</p>
+<figure><img src="img/10-forest.png" alt="Ліс навколо поля"></figure>
+
+<h2><span class="n">12</span>Перепечи NavMesh</h2>
+<p>Поле змінилося, тож навігаційну сітку треба зробити заново: <b>Plane</b> → компонент <b>NavMesh Surface</b> → <b>Bake</b>.</p>
+<figure><img src="img/07-navmesh.png" alt="NavMesh Surface на Plane"><figcaption>Синя сітка має бути тільки на дорозі, а не на вузлах.</figcaption></figure>
+
+<h2><span class="n">13</span>Камера та іконки магазину</h2>
+<ul>
+  <li><b>Main Camera</b>: Position <code>0, 8.6, -7.4</code>, Rotation X <code>52</code>. Background — зелений, під колір трави.</li>
+  <li>Іконки: у теці <code>Previews</code> з архіву є картинки гармат. Імпортуй <code>weapon-cannon.png</code> та інші, постав Texture Type = <b>Sprite</b> і вкажи їх у полі <b>Icon</b> своїх TurretInfo.</li>
+</ul>
+<p>Тисни <b>Play</b>, будуй турелі й запускай хвилі!</p>
+
+<h2>Якщо щось пішло не так</h2>
+<div class="wrap"><table>
+<tr><th>Проблема</th><th>Причина</th><th>Що зробити</th></tr>
+<tr><td>Моделі білі</td><td>У матеріалі немає Base Map</td><td>Крок 3: постав <code>colormap.png</code></td></tr>
+<tr><td>Моделі рожеві</td><td>Матеріал не для URP</td><td>Shader → Universal Render Pipeline/Lit</td></tr>
+<tr><td>Вороги ходять по траві</td><td>Старий NavMesh або низький колайдер вузла</td><td>Крок 4 (Size Y = 0.6) і крок 12 (Bake)</td></tr>
+<tr><td>Вороги стоять на місці</td><td>NavMesh не запечено, або Plane вимкнено цілком</td><td>Вимкни лише Mesh Renderer, потім Bake</td></tr>
+<tr><td>Турель не будується</td><td>Клік не влучає в колайдер вузла, або немає BuildPoint</td><td>Крок 4: Box Collider і BuildPoint</td></tr>
+<tr><td>Вороги не б'ють замок</td><td>Вимкнули цілий FinishPoint замість Mesh Renderer</td><td>Увімкни FinishPoint, вимкни тільки рендер</td></tr>
+</table></div>
+
+<h2>Додаткове завдання: інші набори з Asset Store</h2>
+<p>На слайді 6 є ще чотири безкоштовні набори. З ними можна зробити рівні в іншому стилі:</p>
+<ul>
+  <li><a href="https://assetstore.unity.com/packages/3d/environments/forest-low-poly-toon-battle-arena-tower-defense-pack-100080">Forest — Low Poly Toon Battle Arena / Tower Defense Pack</a></li>
+  <li><a href="https://assetstore.unity.com/packages/3d/environments/dungeons/dungeon-low-poly-toon-battle-arena-tower-defense-pack-109791">Dungeon — Low Poly Toon Battle Arena / Tower Defense Pack</a></li>
+  <li><a href="https://assetstore.unity.com/packages/3d/environments/desert-low-poly-toon-battle-arena-tower-defense-pack-124507">Desert — Low Poly Toon Battle Arena / Tower Defense Pack</a></li>
+  <li><a href="https://assetstore.unity.com/packages/3d/environments/fantasy/goblin-cannon-145437">Goblin &amp; Cannon</a> — анімований ворог-гоблін</li>
+</ul>
+<p>Як додати: на сторінці набору натисни <b>Add to My Assets</b> (потрібен вхід в Unity ID) → в Unity відкрий <b>Window → Package Management → Package Manager → My Assets</b> → вибери набір → <b>Download</b> → <b>Import</b>.</p>
+<figure><img src="img/12-asset-store-packs.png" alt="Демо-сцени наборів Forest, Dungeon, Desert і Goblin &amp; Cannon"><figcaption>Демо-сцени наборів у нашому проєкті: Forest, Dungeon, Desert, Goblin &amp; Cannon.</figcaption></figure>
+<div class="box warn"><b>Рожеві моделі?</b> Ці набори старіші й зроблені під Built-in render pipeline. Більшість матеріалів Unity оновить сама, а решту виправить <b>Edit → Rendering → Materials → Convert All Built-In Materials to Current SRP</b>.</div>
+<div class="box warn"><b>Помилка «Type 'Rotator' already defines a member called 'Update'»?</b> У наборах Forest і Desert є скрипти з однаковими назвами (<code>Rotator</code>, <code>ChestDemo</code>, <code>MaterialMover</code>). Якщо імпортуєш обидва, загорни скрипти одного з наборів у <code>namespace</code>, наприклад <code>namespace AurynSky.Desert { ... }</code>. Файли не видаляй, бо на них посилаються префаби набору.</div>
+
+<details>
+<summary>Для викладача</summary>
+<p>Еталонний проєкт: <code>~/Robocode/Courses/Unity/TowerDefense2026</code>, гілка/тег <code>kenney-art</code> (поверх <code>lesson-08</code>).
+Меню <b>Robocode → Tower Defense → Apply Kenney art</b> автоматично виконує кроки 3–13 над сценою уроку 8 (скрипт <code>Assets/Editor/Robocode/TowerDefenseArt.cs</code>); зручно для порівняння з роботами учнів.</p>
+<p>Ігрова логіка не змінюється: префаби перезаписуються за тими самими шляхами, тому TurretInfo та посилання на сцені не ламаються. Перевірено на ПК (кліки через Input System, хвилі, нагорода) і на Android (IL2CPP, ARM64).</p>
+</details>
+
+<footer>Моделі: Kenney Tower Defense Kit 2.1 (CC0, kenney.nl). Скриншоти: Unity 6000.3.22f1, проєкт TowerDefense2026.</footer>
+</main>
+</body>
+</html>

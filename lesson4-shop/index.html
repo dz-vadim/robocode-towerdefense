@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Магазин, вибух і звук</title>
+<style>
+:root{--bg:#f7f6f2;--fg:#1f2227;--muted:#5b616c;--card:#fff;--line:#e2e0d8;--accent:#6b2fa3;--accent2:#3d8b4f;--warn:#a15c00;--code:#efede6}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17191d;--fg:#e9e8e4;--muted:#a3a8b2;--card:#1f2228;--line:#31353d;--accent:#b88ae6;--accent2:#7fd18f;--warn:#ffc266;--code:#262a31}}
+:root[data-theme="dark"]{--bg:#17191d;--fg:#e9e8e4;--muted:#a3a8b2;--card:#1f2228;--line:#31353d;--accent:#b88ae6;--accent2:#7fd18f;--warn:#ffc266;--code:#262a31}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:17px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:980px;margin:0 auto;padding:32px 16px 72px}
+h1{font-size:1.9rem;line-height:1.25;margin:0 0 6px}
+h2{font-size:1.3rem;margin:44px 0 10px;display:flex;gap:10px;align-items:baseline}
+h2 .n{flex:none;display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--accent);color:#fff;font-size:1rem}
+h3{font-size:1.05rem;margin:22px 0 6px}
+p{margin:8px 0}
+.sub{color:var(--muted);margin:0 0 22px}
+.box{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:14px 0}
+.tip{border-left:4px solid var(--accent2)}
+.warn{border-left:4px solid var(--warn)}
+figure{margin:14px 0}
+figure img{width:100%;height:auto;border-radius:8px;border:1px solid var(--line);display:block}
+figcaption{color:var(--muted);font-size:.9rem;margin-top:6px}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:720px){.pair{grid-template-columns:1fr}}
+code,kbd{background:var(--code);padding:1px 6px;border-radius:4px;font-size:.88em;overflow-wrap:anywhere}
+a{overflow-wrap:anywhere}
+kbd{border:1px solid var(--line)}
+table{width:100%;border-collapse:collapse;margin:10px 0;font-size:.95rem}
+th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--muted);font-weight:600}
+.wrap{overflow-x:auto}
+ol li,ul li{margin:4px 0}
+.compass{display:grid;grid-template-columns:repeat(3,44px);grid-template-rows:repeat(3,44px);gap:2px;margin:6px 0;font-weight:700;text-align:center}
+.compass div{display:grid;place-items:center;border-radius:6px}
+.compass .c{background:var(--accent);color:#fff}
+details{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 16px;margin-top:40px}
+summary{cursor:pointer;font-weight:600}
+footer{margin-top:40px;color:var(--muted);font-size:.85rem}
+pre{background:var(--code);border:1px solid var(--line);border-radius:8px;padding:12px 14px;overflow-x:auto;font-size:.86rem;line-height:1.5}
+pre code{background:none;padding:0}
+.new{background:rgba(61,139,79,.18);display:block}
+.icons{display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin:10px 0}
+.icons a{display:grid;justify-items:center;gap:4px;font-size:.85rem;color:var(--muted);text-decoration:none}
+.icons img{width:56px;height:56px;background:#59708f;border-radius:10px;padding:6px}
+.part{margin-top:56px;padding-top:6px;border-top:2px solid var(--line);color:var(--muted);font-size:.9rem;letter-spacing:.06em;text-transform:uppercase}
+figure.narrow img{max-width:460px}
+</style>
+</head>
+<body>
+<main>
+<h1>Урок 4: магазин, вибух і звук</h1>
+<p class="sub">Unity PRO · Low Poly Tower Defense · урок 4 «Shop. Particle System. Audio» · основа — твій проєкт після уроку 3</p>
+
+<div class="pair">
+  <figure><img src="img/01-before.jpg" alt="Гра після уроку 3"><figcaption>Було: турелі одного типу</figcaption></figure>
+  <figure><img src="img/02-after.jpg" alt="Магазин з трьома турелями і вибух ворога"><figcaption>Стане: магазин на 3 турелі, ворог розлітається, є звуки</figcaption></figure>
+</div>
+<div class="box tip"><b>Відео всіх кроків</b> (2,5 хв): <a href="../video/lesson4-shop-fx-audio.mp4">lesson4-shop-fx-audio.mp4</a>. Зелене тло в коді — рядки, які треба дописати.</div>
+
+<h2><span class="n">1</span>Спершу виправимо баг з уроку 3</h2>
+<p>У <code>BuildManager</code> підписка йде лямбдою, а лямбду не можна відписати: <code>-=</code> отримує <i>новий</i> об'єкт. Передаємо сам метод:</p>
+<pre><code>private void OnEnable()
+{
+    _buildAction.Enable();
+    <span class="new">_buildAction.started += InteractWithNode;</span>
+}
+
+private void OnDisable()
+{
+    _buildAction.Disable();
+    <span class="new">_buildAction.started -= InteractWithNode;</span>
+}</code></pre>
+
+<h2><span class="n">2</span>TurretInfo — «картка» турелі</h2>
+<p>Новий скрипт <code>TurretInfo</code>. Це <b>ScriptableObject</b>: не компонент на об'єкті, а файл-дані в проєкті.</p>
+<pre><code>using UnityEngine;
+
+[CreateAssetMenu(fileName = &quot;TurretInfo&quot;, menuName = &quot;Scriptable Objects/TurretInfo&quot;)]
+public class TurretInfo : ScriptableObject
+{
+    public Sprite icon;
+    public int cost = 0;
+    public GameObject turretPrefab;
+}</code></pre>
+<ol>
+  <li>Три картинки в <code>Sprite</code>: <b>Texture Type = Sprite (2D and UI)</b> → Apply.</li>
+  <li>У теці <code>ScriptableObjects</code>: <b>Create → Scriptable Objects → TurretInfo</b> — тричі. Заповни: <code>StandardTurret</code> 100, <code>BigTurret</code> 200, <code>SlowTurret</code> 150, іконку і префаб кожної турелі.</li>
+</ol>
+<figure class="narrow"><img src="img/03-turretinfo.jpg" alt="TurretInfo в Inspector: іконка, ціна, префаб"></figure>
+
+<h2><span class="n">3</span>Кнопка магазину</h2>
+<pre><code>using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class SelectTurretButton : MonoBehaviour
+{
+    [SerializeField] private Image image;
+    [SerializeField] private TMP_Text costLabel;
+
+    public void SetTurretInfo(TurretInfo info)
+    {
+        image.sprite = info.icon;
+        costLabel.text = info.cost.ToString();
+    }
+}</code></pre>
+<ol>
+  <li>На Canvas: <b>UI → Button - TextMeshPro</b>, назви <code>SelectTurretButton</code>, розмір 150 × 170. Текст усередині видали.</li>
+  <li>Додай дочірні <b>Image</b> (іконка, вгорі) і <b>Text - TextMeshPro</b> <code>CostLabel</code> (ціна, внизу).</li>
+  <li>Додай скрипт <code>SelectTurretButton</code>, перетягни в поля Image і CostLabel.</li>
+  <li>Перетягни кнопку в <code>Prefabs</code> і видали зі сцени — кнопки створюватиме скрипт.</li>
+</ol>
+<figure><img src="img/04-button.jpg" alt="Префаб кнопки: Image, Button, SelectTurretButton"></figure>
+
+<h2><span class="n">4</span>Панель магазину</h2>
+<pre><code>using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class ShopPanel : MonoBehaviour
+{
+    [SerializeField] private GameObject buttonPrefab;
+    [SerializeField] private List&lt;TurretInfo&gt; turretInfos;
+
+    private void Start()
+    {
+        foreach (TurretInfo turretInfo in turretInfos)
+        {
+            GameObject button = Instantiate(buttonPrefab, transform);
+            button.GetComponent&lt;SelectTurretButton&gt;().SetTurretInfo(turretInfo);
+            button.GetComponent&lt;Button&gt;().onClick.AddListener(
+                () =&gt; BuildManager.Instance.ChangeCurrentTurret(turretInfo));
+        }
+    }
+}</code></pre>
+<p>У <code>BuildManager</code> — метод вибору турелі і перевірка, щоб клік по магазину не будував турель під кнопкою:</p>
+<pre><code><span class="new">using System.Collections.Generic;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;</span>
+...
+<span class="new">public void ChangeCurrentTurret(TurretInfo info)
+{
+    _currentCost = info.cost;
+    _currentTurret = info.turretPrefab;
+}</span>
+
+public void InteractWithNode(InputAction.CallbackContext callbackContext)
+{
+    Vector2 mousePosition = callbackContext.ReadValue&lt;Vector2&gt;();
+    <span class="new">if (IsPointerOverUI(mousePosition)) return;</span>
+    ...
+}
+
+<span class="new">private bool IsPointerOverUI(Vector2 position)
+{
+    var data = new PointerEventData(EventSystem.current) { position = position };
+    var results = new List&lt;RaycastResult&gt;();
+    EventSystem.current.RaycastAll(data, results);
+    foreach (var r in results)
+        if (r.module is GraphicRaycaster) return true;
+    return false;
+}</span></code></pre>
+<ol>
+  <li>На Canvas: <b>UI → Panel</b>, назви <code>ShopPanel</code>, прив'яжи ліворуч по центру (180 × 560).</li>
+  <li>Додай <b>Vertical Layout Group</b> (Spacing 12, Child Alignment — Middle Center, зніми галочки <i>Control Child Size</i>).</li>
+  <li>Додай скрипт <code>ShopPanel</code>: префаб кнопки і три TurretInfo у список.</li>
+</ol>
+<div class="pair">
+  <figure><img src="img/05-shoppanel.jpg" alt="ShopPanel в Inspector"></figure>
+  <figure><img src="img/06-play.jpg" alt="Магазин у грі"><figcaption>Play: клік по картці — вибір, клік по клітинці — будівництво.</figcaption></figure>
+</div>
+<div class="box warn"><b>Турель будується під кнопкою магазину?</b> Немає перевірки <code>IsPointerOverUI</code> з кроку 4.</div>
+
+<h2><span class="n">5</span>Вибух BoomFX</h2>
+<p><b>Hierarchy → ПКМ → Effects → Particle System</b>, назви <code>BoomFX</code>:</p>
+<table>
+<tr><th>Модуль</th><th>Що поставити</th></tr>
+<tr><td>Головний</td><td>Duration 0.5 · Looping ✗ · Start Lifetime 1 · Start Speed 2–4 · Start Size 0.05–0.15 · Gravity Modifier 1 · Stop Action = Destroy</td></tr>
+<tr><td>Emission</td><td>Rate over Time 0 · Bursts: <b>+</b>, Count 60</td></tr>
+<tr><td>Shape</td><td>Hemisphere, Radius 0.2</td></tr>
+<tr><td>Collision</td><td>✓, Type World, Bounce 0.3</td></tr>
+<tr><td>Renderer</td><td>Render Mode = Mesh, Mesh = Cube, Material = матеріал ворога</td></tr>
+</table>
+<p>Перетягни в <code>Prefabs</code>, зі сцени видали.</p>
+<figure class="narrow"><img src="img/07-boomfx.jpg" alt="Налаштування BoomFX"></figure>
+
+<h2><span class="n">6</span>Ворог розлітається</h2>
+<pre><code>[SerializeField] private int reward = 50;
+<span class="new">[SerializeField] private GameObject boomFX;</span>
+...
+        BuildManager.Instance.AddCoins(reward);
+        <span class="new">Instantiate(boomFX, transform.position, Quaternion.identity);</span>
+        Destroy(gameObject);</code></pre>
+<p>У префабі <b>Enemy</b> перетягни <code>BoomFX</code> у поле <b>Boom FX</b>.</p>
+<div class="pair">
+  <figure><img src="img/08-enemy.jpg" alt="Поле Boom FX у префабі ворога"></figure>
+  <figure><img src="img/09-boom.jpg" alt="Ворог розлітається на кубики"></figure>
+</div>
+
+<h2><span class="n">7</span>Звуки</h2>
+<p>Завантаж звуки (правою кнопкою → «Зберегти як») у <code>Assets/Audio</code>: <a href="audio/Shoot1.wav" download>Shoot1</a> · <a href="audio/Shoot2.wav" download>Shoot2</a> · <a href="audio/Build.wav" download>Build</a> · <a href="audio/Explosion.wav" download>Explosion</a>.</p>
+<ol>
+  <li><b>Create → Audio → Audio Random Container</b>, назви <code>Shoot</code>. Додай Shoot1 і Shoot2, Playback Mode — <b>Random</b>, увімкни розкид Pitch — постріли не будуть однаковими.</li>
+  <li>У кожному префабі турелі на <b>Weapon</b> (де скрипт Turret) додай <b>Audio Source</b>: Audio Resource = <code>Shoot</code>, зніми <i>Play On Awake</i>.</li>
+  <li>На <b>BuildManager</b> — ще один <b>Audio Source</b> з <code>Build.wav</code>, без Play On Awake.</li>
+</ol>
+<pre><code>// Turret.cs
+<span class="new">private AudioSource _audioSource;</span>
+
+private void Start()
+{
+    <span class="new">_audioSource = GetComponent&lt;AudioSource&gt;();</span>
+    StartCoroutine(Fire());
+}
+...
+    _enemies[0].TakeDamage(_damage);
+    <span class="new">_audioSource.Play();</span>
+
+// BuildManager.cs
+<span class="new">[SerializeField] private AudioSource _buildSound;</span>
+...
+    node.Build(_currentTurret);
+    <span class="new">_buildSound.Play();</span></code></pre>
+<figure class="narrow"><img src="img/10-audiosource.jpg" alt="AudioSource на Weapon"></figure>
+
+<h2><span class="n">8</span>Перевір</h2>
+<ul>
+  <li>Магазин показує 3 турелі з цінами, клік по картці змінює турель.</li>
+  <li>Турель не будується, коли клікаєш по магазину.</li>
+  <li>Ворог розлітається на кубики, монети додаються.</li>
+  <li>Чути постріли (різні) і звук будівництва.</li>
+</ul>
+
+<details>
+<summary>Для викладача</summary>
+<p>Зроблено на копії проєкту групи з <code>cachy:~/TowerDeff</code>: <code>~/Robocode/Courses/Unity/Groups/TowerDeff</code>, теги <code>group-2026-10-10</code> (стан групи) → <code>lesson-04-done</code>. Кроки в редакторі — меню <b>Robocode → Lesson4</b>. Звуки взято з еталонного проєкту TowerDefense2026.</p>
+</details>
+</main>
+</body>
+</html>
