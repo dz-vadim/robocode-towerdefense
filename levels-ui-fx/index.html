@@ -48,6 +48,19 @@ pre code{background:none;padding:0}
 .icons img{width:56px;height:56px;background:#59708f;border-radius:10px;padding:6px}
 .part{margin-top:56px;padding-top:6px;border-top:2px solid var(--line);color:var(--muted);font-size:.9rem;letter-spacing:.06em;text-transform:uppercase}
 figure.narrow img{max-width:460px}
+/* телефон: читабельний код, таблиці, збільшення картинок */
+.new{display:inline-block;min-width:100%}
+td code,th code{overflow-wrap:normal}
+figure img{cursor:zoom-in}
+@media (max-width:600px){
+main{padding:22px 14px 56px}
+h1{font-size:1.6rem}
+h2{font-size:1.2rem;margin-top:36px}
+pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:.8rem;padding:10px 12px}
+.box{padding:12px 13px}
+table{font-size:.9rem}
+th,td{padding:6px 5px}
+}
 </style>
 </head>
 <body>
@@ -233,5 +246,13 @@ public class CameraShake : MonoBehaviour
 
 <footer>Іконки намальовані кодом для цього курсу — використовуй вільно. Моделі: Kenney (CC0), AurynSky, VSQUAD.</footer>
 </main>
+<script>
+// дотик до скриншота — відкрити його окремо, щоб збільшити пальцями
+document.querySelectorAll('figure img').forEach(function(i){
+  if (i.closest('a')) return;
+  var a = document.createElement('a'); a.href = i.getAttribute('src'); a.target = '_blank';
+  i.parentNode.insertBefore(a, i); a.appendChild(i);
+});
+</script>
 </body>
 </html>

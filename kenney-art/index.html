@@ -40,6 +40,19 @@ ol li,ul li{margin:4px 0}
 details{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 16px;margin-top:40px}
 summary{cursor:pointer;font-weight:600}
 footer{margin-top:40px;color:var(--muted);font-size:.85rem}
+/* телефон: читабельний код, таблиці, збільшення картинок */
+.new{display:inline-block;min-width:100%}
+td code,th code{overflow-wrap:normal}
+figure img{cursor:zoom-in}
+@media (max-width:600px){
+main{padding:22px 14px 56px}
+h1{font-size:1.6rem}
+h2{font-size:1.2rem;margin-top:36px}
+pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:.8rem;padding:10px 12px}
+.box{padding:12px 13px}
+table{font-size:.9rem}
+th,td{padding:6px 5px}
+}
 </style>
 </head>
 <body>
@@ -204,5 +217,13 @@ footer{margin-top:40px;color:var(--muted);font-size:.85rem}
 
 <footer>Моделі: Kenney Tower Defense Kit 2.1 (CC0, kenney.nl). Скриншоти: Unity 6000.3.22f1, проєкт TowerDefense2026.</footer>
 </main>
+<script>
+// дотик до скриншота — відкрити його окремо, щоб збільшити пальцями
+document.querySelectorAll('figure img').forEach(function(i){
+  if (i.closest('a')) return;
+  var a = document.createElement('a'); a.href = i.getAttribute('src'); a.target = '_blank';
+  i.parentNode.insertBefore(a, i); a.appendChild(i);
+});
+</script>
 </body>
 </html>

@@ -48,6 +48,19 @@ pre code{background:none;padding:0}
 .icons img{width:56px;height:56px;background:#59708f;border-radius:10px;padding:6px}
 .part{margin-top:56px;padding-top:6px;border-top:2px solid var(--line);color:var(--muted);font-size:.9rem;letter-spacing:.06em;text-transform:uppercase}
 figure.narrow img{max-width:460px}
+/* телефон: читабельний код, таблиці, збільшення картинок */
+.new{display:inline-block;min-width:100%}
+td code,th code{overflow-wrap:normal}
+figure img{cursor:zoom-in}
+@media (max-width:600px){
+main{padding:22px 14px 56px}
+h1{font-size:1.6rem}
+h2{font-size:1.2rem;margin-top:36px}
+pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:.8rem;padding:10px 12px}
+.box{padding:12px 13px}
+table{font-size:.9rem}
+th,td{padding:6px 5px}
+}
 </style>
 </head>
 <body>
@@ -66,13 +79,13 @@ figure.narrow img{max-width:460px}
 <pre><code>private void OnEnable()
 {
     _buildAction.Enable();
-    <span class="new">_buildAction.started += InteractWithNode;</span>
+<span class="new">    _buildAction.started += InteractWithNode;</span>
 }
 
 private void OnDisable()
 {
     _buildAction.Disable();
-    <span class="new">_buildAction.started -= InteractWithNode;</span>
+<span class="new">    _buildAction.started -= InteractWithNode;</span>
 }</code></pre>
 
 <h2><span class="n">2</span>TurretInfo — «картка» турелі</h2>
@@ -151,7 +164,7 @@ using UnityEngine.UI;</span>
 public void InteractWithNode(InputAction.CallbackContext callbackContext)
 {
     Vector2 mousePosition = callbackContext.ReadValue&lt;Vector2&gt;();
-    <span class="new">if (IsPointerOverUI(mousePosition)) return;</span>
+<span class="new">    if (IsPointerOverUI(mousePosition)) return;</span>
     ...
 }
 
@@ -193,7 +206,7 @@ public void InteractWithNode(InputAction.CallbackContext callbackContext)
 <span class="new">[SerializeField] private GameObject boomFX;</span>
 ...
         BuildManager.Instance.AddCoins(reward);
-        <span class="new">Instantiate(boomFX, transform.position, Quaternion.identity);</span>
+<span class="new">        Instantiate(boomFX, transform.position, Quaternion.identity);</span>
         Destroy(gameObject);</code></pre>
 <p>У префабі <b>Enemy</b> перетягни <code>BoomFX</code> у поле <b>Boom FX</b>.</p>
 <div class="pair">
@@ -213,18 +226,18 @@ public void InteractWithNode(InputAction.CallbackContext callbackContext)
 
 private void Start()
 {
-    <span class="new">_audioSource = GetComponent&lt;AudioSource&gt;();</span>
+<span class="new">    _audioSource = GetComponent&lt;AudioSource&gt;();</span>
     StartCoroutine(Fire());
 }
 ...
     _enemies[0].TakeDamage(_damage);
-    <span class="new">_audioSource.Play();</span>
+<span class="new">    _audioSource.Play();</span>
 
 // BuildManager.cs
 <span class="new">[SerializeField] private AudioSource _buildSound;</span>
 ...
     node.Build(_currentTurret);
-    <span class="new">_buildSound.Play();</span></code></pre>
+<span class="new">    _buildSound.Play();</span></code></pre>
 <figure class="narrow"><img src="img/10-audiosource.jpg" alt="AudioSource на Weapon"></figure>
 
 <h2><span class="n">8</span>Перевір</h2>
@@ -240,5 +253,13 @@ private void Start()
 <p>Зроблено на копії проєкту групи з <code>cachy:~/TowerDeff</code>: <code>~/Robocode/Courses/Unity/Groups/TowerDeff</code>, теги <code>group-2026-10-10</code> (стан групи) → <code>lesson-04-done</code>. Кроки в редакторі — меню <b>Robocode → Lesson4</b>. Звуки взято з еталонного проєкту TowerDefense2026.</p>
 </details>
 </main>
+<script>
+// дотик до скриншота — відкрити його окремо, щоб збільшити пальцями
+document.querySelectorAll('figure img').forEach(function(i){
+  if (i.closest('a')) return;
+  var a = document.createElement('a'); a.href = i.getAttribute('src'); a.target = '_blank';
+  i.parentNode.insertBefore(a, i); a.appendChild(i);
+});
+</script>
 </body>
 </html>
